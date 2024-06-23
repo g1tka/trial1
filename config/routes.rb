@@ -1,8 +1,20 @@
 Rails.application.routes.draw do
+  devise_for :customers, controllers: {
+      registrations: 'public/registrations',
+      sessions: 'public/sessions',
+  }
+
+  devise_for :admin, controllers: {
+      sessions: 'admin/sessions',
+  }
+
+
+
   scope module: :public do
 
     root "homes#top"
     get "/about"=>"homes#about"
+    get '/customers/my_page', to: 'customers#show'
 
     resources :items, only: [:index,:show]
     resource :customers, only: [:show,:edit,:update] do
@@ -35,12 +47,4 @@ Rails.application.routes.draw do
     resources :order_details, only: [:update]
   end
 
-  devise_for :customers, controllers: {
-      registrations: 'public/registrations',
-      sessions: 'public/sessions',
-  }
-
-  devise_for :admin, controllers: {
-      sessions: 'admin/sessions',
-  }
 end
